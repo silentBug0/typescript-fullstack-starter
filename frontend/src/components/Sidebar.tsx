@@ -26,6 +26,26 @@ const Sidebar = () => {
         >
           Profile
         </NavLink>
+        <NavLink
+          to="/users"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded ${
+              isActive ? "bg-blue-600" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          Users
+        </NavLink>
+        <NavLink
+          to="/tasks"
+          className={({ isActive }) =>
+            `px-3 py-2 rounded ${
+              isActive ? "bg-blue-600" : "hover:bg-blue-700"
+            }`
+          }
+        >
+          Tasks
+        </NavLink>
       </nav>
     </aside>
   );

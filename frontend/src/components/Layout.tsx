@@ -8,14 +8,14 @@ const Layout = () => {
     <div className="min-h-screen flex flex-col">
       {/* Top Navbar */}
       <Navbar />
-
       <div className="flex flex-1">
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main content area */}
         <main className="flex-1 p-6 bg-gray-50">
-          <Outlet />
+          <Outlet />{" "}
+          {/* This shows the correct route: /dashboard, /tasks, /users, etc */}
         </main>
       </div>
     </div>

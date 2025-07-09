@@ -1,13 +1,12 @@
-// src/pages/Users.tsx
-import DashboardLayout from "../components/DashboardLayout";
+import { useAppSelector } from "../store/hooks";
 
 export default function Users() {
-    console.log("✅ Users page loaded");
+  const auth = useAppSelector((state) => state.auth);
+  console.log("🔍 Auth in Users:", auth);
 
   return (
-    <DashboardLayout>
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
-      <p>This is the user management screen.</p>
-    </DashboardLayout>
+    <div className="p-4">
+      <h2 className="text-xl font-bold">✅ USERS PAGE</h2>
+    </div>
   );
 }

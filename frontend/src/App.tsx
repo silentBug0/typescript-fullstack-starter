@@ -7,13 +7,12 @@ import RegisterPage from "./pages/Register";
 import DashboardPage from "./pages/DashboardPage";
 import ProfilePage from "./pages/ProfilePage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import Users from "./pages/Users";
+import Tasks from "./pages/Tasks";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import AuthInitializer from "./components/AuthInitializer";
-
-import Users from "./pages/Users";
-import Tasks from "./pages/Tasks";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,6 +22,7 @@ function App() {
   console.log("🔍 isLoading:", isLoading);
   const auth = useAppSelector((state) => state.auth);
   console.log("🔍 auth state:", auth);
+
   return (
     <>
       <ToastContainer />
@@ -45,7 +45,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
-        {/* Admin-only route example */}
+        {/* Admin-only route (if needed) */}
         <Route
           path="/admin"
           element={
@@ -55,7 +55,7 @@ function App() {
           }
         />
 
-        {/* Error or fallback */}
+        {/* Fallback Routes */}
         <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
