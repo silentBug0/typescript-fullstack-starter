@@ -30,7 +30,14 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
   me(@Req() req: any) {
+    /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-    return req.user; // req.user is populated by JwtStrategy
+    return {
+      id: req?.user?.id,
+      email: req?.user?.email,
+      role: req?.user?.role,
+      name: req?.user?.name, // optional
+    }; // req.user is populated by JwtStrategy
   }
 }
