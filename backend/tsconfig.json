@@ -1,19 +1,24 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+   "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true, // 👈 this can avoid deeper type-checking errors from node_modules    
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "types": ["jest", "node"],
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "skipLibCheck": true, // 👈 this can avoid deeper type-checking errors from node_modules    
     "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false

@@ -2,11 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import {
-  Injectable,
-  UnauthorizedException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -74,11 +70,7 @@ export class AuthService {
     return { accessToken };
   }
 
-  async register(
-    email: string,
-    password: string,
-    name: string,
-  ): Promise<{ accessToken: string }> {
+  async register(email: string, password: string, name: string): Promise<{ accessToken: string }> {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) throw new BadRequestException('User already exists');
 

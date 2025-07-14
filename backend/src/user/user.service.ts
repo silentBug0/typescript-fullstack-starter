@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 
@@ -17,12 +13,7 @@ export class UserService {
     });
   }
 
-  async createUser(dto: {
-    name: string;
-    email: string;
-    password: string;
-    role?: string;
-  }) {
+  async createUser(dto: { name: string; email: string; password: string; role?: string }) {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     return this.prisma.user.create({
       data: {
@@ -34,11 +25,7 @@ export class UserService {
     });
   }
 
-  async changeRole(
-    targetUserId: number,
-    newRole: 'admin' | 'user',
-    currentUserId: number,
-  ) {
+  async changeRole(targetUserId: number, newRole: 'admin' | 'user', currentUserId: number) {
     const user = await this.prisma.user.findUnique({
       where: { id: Number(targetUserId) },
     });

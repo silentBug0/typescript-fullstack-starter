@@ -17,9 +17,7 @@ import { Task } from '@prisma/client';
   },
 })
 @Injectable()
-export class TaskEventsGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
+export class TaskEventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 

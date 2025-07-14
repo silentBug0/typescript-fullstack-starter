@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import type { Task } from '@prisma/client';
 import { TaskEventsGateway } from './task-events.gateway';
@@ -42,10 +33,7 @@ export class TasksController {
   }
 
   @Delete(':id')
-  delete(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() body: { userId: number },
-  ) {
+  delete(@Param('id', ParseIntPipe) id: number, @Body() body: { userId: number }) {
     return this.taskService.delete(id, body);
   }
 }
