@@ -6,7 +6,7 @@ let reconnectErrorShown = false;
 
 export const connectSocket = () => {
   if (!socket?.connected) {
-    socket = io("http://localhost:3000", {
+    socket = io(import.meta.env.VITE_API_URL, {
       transports: ["websocket"],
       withCredentials: true,
     });

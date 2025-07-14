@@ -23,7 +23,7 @@ const Users = () => {
       if (!token) return;
 
       try {
-        const res = await axios.get("http://localhost:3000/users", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

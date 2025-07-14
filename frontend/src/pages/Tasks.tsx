@@ -26,7 +26,7 @@ const Tasks = () => {
   };
 
   const handleDelete = async (id: number) => {
-    await axios.delete(`http://localhost:3000/tasks/${id}`, {
+    await axios.delete(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
       data: {
         userId: auth.user?.id ?? 0, // Use the logged-in user's ID
       },
@@ -76,13 +76,13 @@ const Tasks = () => {
     if (!title.trim()) return;
 
     if (editingTask) {
-      await axios.put(`http://localhost:3000/tasks/${editingTask.id}`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${editingTask.id}`, {
         title,
         userId: auth.user?.id ?? 0, // Use the logged-in user's ID
       });
       setEditingTask(null);
     } else {
-      await axios.post("http://localhost:3000/tasks", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, {
         title,
         userId: auth.user?.id ?? 0, // Use the logged-in user's ID
       });
@@ -118,7 +118,7 @@ const Tasks = () => {
                 type="checkbox"
                 checked={task.completed}
                 onChange={async () => {
-                  await axios.put(`http://localhost:3000/tasks/${task.id}`, {
+                  await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${task.id}`, {
                     completed: !task.completed,
                     userId: task.userId,
                   });
