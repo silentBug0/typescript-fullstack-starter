@@ -4,11 +4,15 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
+  const { user, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
 
   useEffect(() => {
-    dispatch(DashboardThunk());
-  }, []);
+    if (!user && isAuthenticated) {
+      dispatch(DashboardThunk());
+    }
+  }, [user, isAuthenticated, dispatch]);
 
   return (
     <div className="p-8">
