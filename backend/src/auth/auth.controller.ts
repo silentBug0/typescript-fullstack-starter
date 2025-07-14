@@ -8,8 +8,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from 'src/dto/login.dto';
-import { RegisterDto } from 'src/dto/register.dto';
+import { LoginDto } from '../dto/login.dto';
+import { RegisterDto } from '../dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 function sleep(ms: number): Promise<void> {
