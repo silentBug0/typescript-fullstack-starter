@@ -7,7 +7,7 @@
     "strict": true,
     "skipLibCheck": true, // 👈 this can avoid deeper type-checking errors from node_modules    
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    // "noEmit": true,
     "types": ["jest", "node"],
     "declaration": true,
     "removeComments": true,
