@@ -27,13 +27,17 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    
     try {
-      const resultAction = await dispatch(login({ email, password }));
+      const resultAction = await dispatch(
+        login({ email, password, rememberMe })
+      );
       setLoading(false);
       console.log(
         "resultAction",
         JSON.stringify(resultAction),
-        login, JSON.stringify(login.fulfilled)
+        login,
+        JSON.stringify(login.fulfilled)
       );
 
       if (login.fulfilled.match(resultAction)) {
@@ -42,8 +46,8 @@ export default function LoginPage() {
       } else if (login.rejected.match(resultAction)) {
         const errorMessage =
           resultAction.payload || resultAction.error.message || "Login failed";
-          toast.error(errorMessage);
-        }
+        toast.error(errorMessage);
+      }
     } catch (error) {
       setLoading(false);
       console.error("Error:", error);
@@ -62,7 +66,7 @@ export default function LoginPage() {
         </h2>
 
         <div className="mb-4">
-          <label className="block mb-1 text-sm text-gray-300">Email</label>
+          <label htmlFor="password" className="block mb-1 text-sm text-gray-300">Email</label>
           <input
             type="email"
             required
@@ -73,8 +77,9 @@ export default function LoginPage() {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1 text-sm text-gray-300">Password</label>
+          <label htmlFor="password" className="block mb-1 text-sm text-gray-300">Password</label>
           <input
+            id="password"
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}

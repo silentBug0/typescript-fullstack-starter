@@ -15,9 +15,26 @@ import Layout from "./components/Layout";
 import AuthInitializer from "./components/AuthInitializer";
 
 import "react-toastify/dist/ReactToastify.css";
+import AdminPage from "./pages/AdminPage";
+import { connectSocket, disconnectSocket } from "./socket";
+import { useEffect } from "react";
+import AdminCreateUser from "./pages/AdminCreateUser";
 
 function App() {
   const { isLoading } = useAppSelector((state) => state.auth);
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  useEffect(() => {
+    if (isAuthenticated) {
+      connectSocket();
+    } else {
+      disconnectSocket();
+    }
+
+    // Optional: disconnect on tab close or reload
+    return () => {
+      disconnectSocket();
+    };
+  }, [isAuthenticated]);
 
   console.log("🔍 isLoading:", isLoading);
   const auth = useAppSelector((state) => state.auth);
@@ -25,7 +42,10 @@ function App() {
 
   return (
     <>
-      <ToastContainer />
+      <ToastContainer
+        limit={2} // ✅ Only 2 toasts on screen
+        autoClose={1000}
+      />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LoginPage />} />
@@ -40,20 +60,34 @@ function App() {
           }
         >
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/users" element={<Users />} />
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute>
+                <Users />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/profile" element={<ProfilePage />} />
+          {/* Admin-only route (if needed) */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/add-user"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminCreateUser />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-
-        {/* Admin-only route (if needed) */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute role="admin">
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
 
         {/* Fallback Routes */}
         <Route path="/unauthorized" element={<UnauthorizedPage />} />

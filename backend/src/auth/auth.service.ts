@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   login(user: any) {
-    const payload = { sub: user.id, email: user.email, role: user.role };
+    const payload = { id: user.id, email: user.email, role: user.role };
 
     return {
       access_token: this.jwtService.sign(payload),
@@ -65,7 +65,7 @@ export class AuthService {
   // 👇 Add this method
   generateToken(user: User): { accessToken: string } {
     const payload = {
-      sub: user.id,
+      id: user.id,
       email: user.email,
       role: user.role,
     };
@@ -77,13 +77,14 @@ export class AuthService {
   async register(
     email: string,
     password: string,
+    name: string,
   ): Promise<{ accessToken: string }> {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) throw new BadRequestException('User already exists');
 
     const hashed = await bcrypt.hash(password, 10);
     const user = await this.prisma.user.create({
-      data: { email, password: hashed, role: 'user' },
+      data: { email, password: hashed, role: 'user', name },
     });
 
     return this.generateToken(user);

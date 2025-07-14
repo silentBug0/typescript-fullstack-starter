@@ -6,6 +6,7 @@ async function main() {
   const hashed = await bcrypt.hash('password', 10);
   const user = await prisma.user.create({
     data: {
+      name: 'test',
       email: 'test@example.com',
       password: hashed, // <-- Required field
       role: 'user', // <-- Required field (adjust if enum)

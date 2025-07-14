@@ -12,6 +12,10 @@ import { LoginDto } from 'src/dto/login.dto';
 import { RegisterDto } from 'src/dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -23,15 +27,17 @@ export class AuthController {
       loginDto.password,
     );
 
+    await sleep(1000);
+
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
     return this.authService.login(user);
   }
   @Post('register')
   async register(
-    @Body() { email, password }: RegisterDto,
+    @Body() { email, password, name }: RegisterDto,
   ): Promise<{ accessToken: string }> {
-    return this.authService.register(email, password);
+    return this.authService.register(email, password, name);
   }
 
   @UseGuards(AuthGuard('jwt'))

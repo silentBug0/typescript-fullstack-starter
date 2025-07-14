@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+// src/app.module.ts
+import { Module, forwardRef } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { PrismaModule } from './prisma/prisma.module';
 import { TasksModule } from './tasks/tasks.module';
 import { UserModule } from './user/user.module';
@@ -10,18 +11,15 @@ import { UserModule } from './user/user.module';
   imports: [
     PrismaModule,
     AuthModule,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    forwardRef(() => TasksModule), // ✅ forwardRef for circular use
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
       autoLoadEntities: true,
-      synchronize: true, // Set to false in production
+      synchronize: true,
     }),
-    TasksModule,
     UserModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

@@ -1,13 +1,15 @@
 // src/components/layout/Navbar.tsx
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../store/hooks";
 import { logout } from "../store/authSlice";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    console.log("Logging out...");
+
     dispatch(logout());
     navigate("/");
   };
