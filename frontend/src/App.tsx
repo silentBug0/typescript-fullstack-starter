@@ -87,10 +87,10 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/unauthorized" element={<UnauthorizedPage />} />
         </Route>
 
         {/* Fallback Routes */}
-        <Route path="/unauthorized" element={<UnauthorizedPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>

@@ -163,6 +163,16 @@ const authSlice = createSlice({
                 state.token = null;
                 state.user = null;
                 state.isLoading = false;
+            }).addCase(DashboardThunk.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(DashboardThunk.fulfilled, (state, action) => {
+                state.user = action.payload; // <- critical!
+                state.isLoading = false;
+            })
+            .addCase(DashboardThunk.rejected, (state) => {
+                state.user = null;
+                state.isLoading = false;
             });
     },
 });
