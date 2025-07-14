@@ -45,7 +45,7 @@ export const RegisterThunk = createAsyncThunk(
     "auth/register",
     async ({ email, password, name }: { email: string; password: string; name: string }) => {
         const res = await api.post("/auth/register", { email, password, name });
-        const token = res.data.access_token;
+        const token = res.data.accessToken;
         const user: User = res.data.user;
 
         localStorage.setItem("token", token);
@@ -63,7 +63,7 @@ export const login = createAsyncThunk<
 >("auth/login", async (credentials, thunkAPI) => {
     try {
         const res = await api.post("/auth/login", credentials);
-        const token = res.data.access_token;
+        const token = res.data.accessToken;
         const user: User = res.data.user;
 
         if (credentials.rememberMe) {
@@ -73,7 +73,6 @@ export const login = createAsyncThunk<
             sessionStorage.setItem("token", token);
             sessionStorage.setItem("user", JSON.stringify(user));
         }
-      
 
         return { token, user };
     } catch (err: unknown) {
@@ -87,7 +86,6 @@ export const login = createAsyncThunk<
 // 👤 Authenticated user info
 export const DashboardThunk = createAsyncThunk("auth/dashboard", async () => {
     const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-    console.log("🔑 DashboardThunk token:", token);   
     const res = await api.get("/auth/me", {
         headers: {
             Authorization: `Bearer ${token}`,
