@@ -27,7 +27,8 @@
     "prisma:generate": "npm run prisma:build && prisma generate",
     "prisma:migrate": "npm run prisma:build && prisma migrate dev",
     "prisma:studio": "npm run prisma:build && prisma studio",
-    "prisma:seed": "ts-node prisma/seed.ts"
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "command": "npx ts-node src/main.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.3",
