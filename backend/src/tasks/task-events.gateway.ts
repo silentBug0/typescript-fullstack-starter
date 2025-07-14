@@ -19,7 +19,7 @@ import { Task } from '@prisma/client';
 @Injectable()
 export class TaskEventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
-  server: Server;
+  server!: Server;
 
   constructor(
     @Inject(forwardRef(() => TasksService))

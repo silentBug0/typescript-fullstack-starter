@@ -2,14 +2,14 @@ import { IsEmail, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
-  password: string;
+  password!: string;
 
   @IsString()
-  name: string;
+  name!: string;
 
   @IsString()
-  role: 'admin' | 'user';
+  role!: 'admin' | 'user';
 }
