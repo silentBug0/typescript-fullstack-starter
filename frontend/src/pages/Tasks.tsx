@@ -52,7 +52,7 @@ const Tasks = () => {
     if (isAuthenticated) {
       const socket = getSocket();
 
-      // const handleAllTasks = (allTasks: Task[]) => setTasks(allTasks);
+      const handleAllTasks = (allTasks: Task[]) => setTasks(allTasks);
       const handleTaskCreated = (newTask: Task) => {
         setTasks((prev) => {
           const exists = prev.some((task) => task.id === newTask.id);
@@ -70,13 +70,13 @@ const Tasks = () => {
         setTasks((prev) => prev.filter((t) => t.id !== deletedId));
       };
 
-      // socket?.on("tasks", handleAllTasks);
+      socket?.on("tasks", handleAllTasks);
       socket?.on("taskCreated", handleTaskCreated);
       socket?.on("taskUpdated", handleTaskUpdated);
       socket?.on("taskDeleted", handleTaskDeleted);
 
       return () => {
-        // socket?.off("tasks", handleAllTasks);
+        socket?.off("tasks", handleAllTasks);
         socket?.off("taskCreated", handleTaskCreated);
         socket?.off("taskUpdated", handleTaskUpdated);
         socket?.off("taskDeleted", handleTaskDeleted);
