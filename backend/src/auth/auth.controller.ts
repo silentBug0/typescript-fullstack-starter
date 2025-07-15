@@ -1,9 +1,27 @@
-import { Body, Controller, Post, UnauthorizedException, UseGuards, Get, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UnauthorizedException,
+  UseGuards,
+  Get,
+  Req,
+  Patch,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { RegisterDto } from '../dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { UpdateProfileDto } from 'src/dto/update-profile.dto';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { User } from '@prisma/client';
 
+export const CurrentUser = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user;
+  },
+);
 // function sleep(ms: number): Promise<void> {
 //   return new Promise((resolve) => setTimeout(resolve, ms));
 // }
@@ -14,7 +32,10 @@ export class AuthController {
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
-    const user = await this.authService.validateUser(loginDto.email, loginDto.password);
+    const user = await this.authService.validateUser(
+      loginDto.email,
+      loginDto.password,
+    );
 
     // await sleep(1000);
 
@@ -23,7 +44,9 @@ export class AuthController {
     return this.authService.login(user);
   }
   @Post('register')
-  async register(@Body() { email, password, name }: RegisterDto): Promise<{ accessToken: string }> {
+  async register(
+    @Body() { email, password, name }: RegisterDto,
+  ): Promise<{ accessToken: string }> {
     return this.authService.register(email, password, name);
   }
 
@@ -32,12 +55,18 @@ export class AuthController {
   me(@Req() req: any) {
     /* eslint-disable @typescript-eslint/no-unsafe-member-access */
     /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
+
     return {
       id: req?.user?.id,
       email: req?.user?.email,
       role: req?.user?.role,
       name: req?.user?.name, // optional
     }; // req.user is populated by JwtStrategy
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('profile')
+  updateProfile(@CurrentUser() user: User, @Body() dto: UpdateProfileDto) {
+    return this.authService.updateProfile(user.id, dto);
   }
 }

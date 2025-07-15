@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { UpdateProfileDto } from 'src/dto/update-profile.dto';
 
 interface User {
   id: number;
   email: string;
   role: string;
+  password?: string; // Optional for validation
 }
 
 @Injectable()
@@ -50,7 +56,12 @@ export class AuthService {
   }
 
   login(user: any) {
-    const payload = { id: user.id, email: user.email, role: user.role };
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+    };
 
     return {
       accessToken: this.jwtService.sign(payload),
@@ -70,7 +81,11 @@ export class AuthService {
     return { accessToken };
   }
 
-  async register(email: string, password: string, name: string): Promise<{ accessToken: string }> {
+  async register(
+    email: string,
+    password: string,
+    name: string,
+  ): Promise<{ accessToken: string }> {
     const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) throw new BadRequestException('User already exists');
 
@@ -80,5 +95,20 @@ export class AuthService {
     });
 
     return this.generateToken(user);
+  }
+
+  async updateProfile(userId: number, dto: UpdateProfileDto) {
+    const data: any = {};
+
+    if (dto.name) data.name = dto.name;
+    if (dto.password) data.password = await bcrypt.hash(dto.password, 10);
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data,
+    });
+
+    const { password, ...userWithoutPassword } = updatedUser;
+    return userWithoutPassword;
   }
 }
