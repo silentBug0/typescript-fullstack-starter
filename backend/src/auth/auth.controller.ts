@@ -12,7 +12,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { RegisterDto } from '../dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { UpdateProfileDto } from 'src/dto/update-profile.dto';
+import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { User } from '@prisma/client';
 
