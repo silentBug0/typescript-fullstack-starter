@@ -22,6 +22,9 @@ const Tasks = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
 
+  console.log("auth", auth); // Debugging line
+  
+
   const handleEdit = (task: Task) => {
     setEditingTask(task);
     setTitle(task.title);
@@ -140,7 +143,8 @@ const Tasks = () => {
                     {
                       completed: !task.completed,
                       userId: task.userId,
-                    }
+                    },
+                    { headers: { Authorization: `Bearer ${auth.token}` } }
                   );
                 }}
               />
