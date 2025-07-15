@@ -27,7 +27,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @Roles('admin') // ✅ This now works because AuthGuard injects `req.user`
+  // @Roles('admin') // ✅ This now works because AuthGuard injects `req.user`
   getAllUsers() {
     return this.userService.findAll();
   }

@@ -12,10 +12,11 @@ interface User {
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const auth = useAppSelector((state) => state.auth);
+  const role = auth.user?.role;
+  
   const token =
-    useAppSelector((state) => state.auth.token) ??
-    localStorage.getItem("token") ??
-    sessionStorage.getItem("token");
+    auth.token ?? localStorage.getItem("token") ?? sessionStorage.getItem("token");
   console.log("🔑 Users token:", token); // Debugging line
 
   useEffect(() => {
@@ -57,6 +58,7 @@ const Users = () => {
               <td className="p-2 border">{u.name}</td>
               <td className="p-2 border">{u.email}</td>
               <td className="p-2 border">
+                {role === "admin" ? (
                 <select
                   value={u.role}
                   onChange={async (e) => {
@@ -82,6 +84,7 @@ const Users = () => {
                   <option value="user">user</option>
                   <option value="admin">admin</option>
                 </select>
+                ): u.role}
               </td>
             </tr>
           ))}

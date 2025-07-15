@@ -65,16 +65,18 @@ const Sidebar = () => {
           </NavLink>
         )}
 
-        <NavLink
-          to="/admin/add-user"
-          className={({ isActive }) =>
-            `px-3 py-2 rounded font-bold flex items-center gap-1 ${
-              isActive ? "bg-yellow-400 text-black" : "hover:bg-blue-700"
-            }`
-          }
-        >
-          <span>➕</span> Add User
-        </NavLink>
+        {auth.user?.role === "admin" && (
+          <NavLink
+            to="/admin/add-user"
+            className={({ isActive }) =>
+              `px-3 py-2 rounded font-bold flex items-center gap-1 ${
+                isActive ? "bg-yellow-400 text-black" : "hover:bg-blue-700"
+              }`
+            }
+          >
+            <span>➕</span> Add User
+          </NavLink>
+        )}
 
         <NavLink
           to="/tasks"

@@ -24,42 +24,62 @@ export default function Register() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-20 space-y-4">
-      <h2 className="text-2xl font-bold text-center">Register</h2>
-
-      <input
-        type="text"
-        placeholder="Name"
-        required
-        className="w-full border px-3 py-2"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      <input
-        type="email"
-        placeholder="Email"
-        required
-        className="w-full border px-3 py-2"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        required
-        className="w-full border px-3 py-2"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md"
       >
-        Register
-      </button>
-    </form>
+        <h2 className="text-2xl font-bold text-center">Register</h2>
+
+        <div className="mb-4">
+          <label htmlFor="Name" className="block mb-1 text-sm text-gray-300">
+            Name
+          </label>
+          <input
+            type="text"
+            required
+            className="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-4">
+          <label htmlFor="Email" className="block mb-1 text-sm text-gray-300">
+            Email
+          </label>
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="Password"
+            className="block mb-1 text-sm text-gray-300"
+          >
+            Password
+          </label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
+        >
+          Register
+        </button>
+      </form>
+    </div>
   );
 }
