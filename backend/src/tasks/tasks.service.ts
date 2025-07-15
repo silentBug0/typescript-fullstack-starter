@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import { ForbiddenException, Injectable, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import type { Task } from '@prisma/client';
@@ -71,5 +69,12 @@ export class TasksService {
 
     await this.prisma.task.delete({ where: { id } });
     this.events.emitTaskDeleted(id);
+  }
+
+  getAllTasks(userId): Promise<Task[]> {
+    return this.prisma.task.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 }

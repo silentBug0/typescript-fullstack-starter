@@ -1,9 +1,22 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import type { Task } from '@prisma/client';
+import type { Task, User } from '@prisma/client';
 import { TaskEventsGateway } from './task-events.gateway';
+import { AuthGuard } from '@nestjs/passport';
+import { CurrentUser } from 'src/auth/auth.controller';
 
 @Controller('tasks')
+@UseGuards(AuthGuard('jwt'))
 export class TasksController {
   constructor(
     private readonly taskService: TasksService,
@@ -16,12 +29,17 @@ export class TasksController {
 
   @Post()
   async create(@Body() data: { title: string; userId: number }) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const task: Task = await this.taskService.create(data);
     console.log('Task created:', task);
 
     this.taskEventsGateway.emitTaskCreated(task); // <--- this notifies frontend
     return task;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  getAllTasks(@CurrentUser() user: User) {
+    return this.taskService.getAllTasks(user.id);
   }
 
   @Put(':id')
@@ -33,7 +51,10 @@ export class TasksController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number, @Body() body: { userId: number }) {
+  delete(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { userId: number },
+  ) {
     return this.taskService.delete(id, body);
   }
 }

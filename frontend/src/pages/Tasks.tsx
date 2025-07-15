@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getSocket } from "../socket";
 import axios from "axios";
-import {  useAppSelector } from "../store/hooks";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { fetchTasks } from "../store/taskSlice";
 
 interface Task {
   id: number;
@@ -19,6 +20,7 @@ const Tasks = () => {
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const auth = useAppSelector((state) => state.auth);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useAppDispatch();
 
   const handleEdit = (task: Task) => {
     setEditingTask(task);
@@ -34,12 +36,16 @@ const Tasks = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchTasks()).then((res) => {
+      setTasks(res.payload);
+    }); // 👈 fetch existing tasks on mount
+  }, [dispatch]);
+
+  useEffect(() => {
     if (isAuthenticated) {
       const socket = getSocket();
 
-      socket?.emit("getTasks");
-
-      const handleAllTasks = (allTasks: Task[]) => setTasks(allTasks);
+      // const handleAllTasks = (allTasks: Task[]) => setTasks(allTasks);
       const handleTaskCreated = (newTask: Task) => {
         setTasks((prev) => {
           const exists = prev.some((task) => task.id === newTask.id);
@@ -57,13 +63,13 @@ const Tasks = () => {
         setTasks((prev) => prev.filter((t) => t.id !== deletedId));
       };
 
-      socket?.on("tasks", handleAllTasks);
+      // socket?.on("tasks", handleAllTasks);
       socket?.on("taskCreated", handleTaskCreated);
       socket?.on("taskUpdated", handleTaskUpdated);
       socket?.on("taskDeleted", handleTaskDeleted);
 
       return () => {
-        socket?.off("tasks", handleAllTasks);
+        // socket?.off("tasks", handleAllTasks);
         socket?.off("taskCreated", handleTaskCreated);
         socket?.off("taskUpdated", handleTaskUpdated);
         socket?.off("taskDeleted", handleTaskDeleted);
@@ -76,10 +82,13 @@ const Tasks = () => {
     if (!title.trim()) return;
 
     if (editingTask) {
-      await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${editingTask.id}`, {
-        title,
-        userId: auth.user?.id ?? 0, // Use the logged-in user's ID
-      });
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/tasks/${editingTask.id}`,
+        {
+          title,
+          userId: auth.user?.id ?? 0, // Use the logged-in user's ID
+        }
+      );
       setEditingTask(null);
     } else {
       await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, {
@@ -118,10 +127,13 @@ const Tasks = () => {
                 type="checkbox"
                 checked={task.completed}
                 onChange={async () => {
-                  await axios.put(`${import.meta.env.VITE_API_URL}/tasks/${task.id}`, {
-                    completed: !task.completed,
-                    userId: task.userId,
-                  });
+                  await axios.put(
+                    `${import.meta.env.VITE_API_URL}/tasks/${task.id}`,
+                    {
+                      completed: !task.completed,
+                      userId: task.userId,
+                    }
+                  );
                 }}
               />
               <span

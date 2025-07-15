@@ -15,13 +15,14 @@ interface AuthState {
     user: User | null;
     token: string | null;
     isLoading: boolean;
-}
-
+    tasks: never[]; // You can replace 'any' with a Task type if defined elsewhere
+};
 const initialState: AuthState = {
     isAuthenticated: false,
     user: null,
     token: null,
     isLoading: true, // ✅ must be TRUE to show "Checking session..."
+    tasks: [],
 };
 
 // 🔍 Check session from localStorage
@@ -171,7 +172,7 @@ const authSlice = createSlice({
             .addCase(DashboardThunk.fulfilled, (state, action) => {
                 state.user = action.payload; // <- critical!
                 state.isLoading = false;
-            })
+            });
             // .addCase(DashboardThunk.rejected, (state) => {
             //     state.user = null;
             //     state.isLoading = false;
