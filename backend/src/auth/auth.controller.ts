@@ -7,19 +7,21 @@ import {
   Get,
   Req,
   Patch,
+  ExecutionContext,
+  createParamDecorator,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from '../dto/login.dto';
 import { RegisterDto } from '../dto/register.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UpdateProfileDto } from '../dto/update-profile.dto';
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { Request } from 'express'; // ✅ import this
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest();
-    return request.user;
+  (data: unknown, context: ExecutionContext) => {
+    const request = context.switchToHttp().getRequest<Request>(); // ✅ typed
+    return request.user as Express.User;
   },
 );
 // function sleep(ms: number): Promise<void> {

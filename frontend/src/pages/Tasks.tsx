@@ -29,6 +29,7 @@ const Tasks = () => {
 
   const handleDelete = async (id: number) => {
     await axios.delete(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
+      headers: { Authorization: `Bearer ${auth.token}` },
       data: {
         userId: auth.user?.id ?? 0, // Use the logged-in user's ID
       },
@@ -87,14 +88,21 @@ const Tasks = () => {
         {
           title,
           userId: auth.user?.id ?? 0, // Use the logged-in user's ID
-        }
+        },
+        { headers: { Authorization: `Bearer ${auth.token}` } }
       );
       setEditingTask(null);
     } else {
-      await axios.post(`${import.meta.env.VITE_API_URL}/tasks`, {
-        title,
-        userId: auth.user?.id ?? 0, // Use the logged-in user's ID
-      });
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/tasks`,
+        {
+          title,
+          userId: auth.user?.id ?? 0, // Use the logged-in user's ID
+        },
+        {
+          headers: { Authorization: `Bearer ${auth.token}` },
+        }
+      );
     }
 
     setTitle("");
