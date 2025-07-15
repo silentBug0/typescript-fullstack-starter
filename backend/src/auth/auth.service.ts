@@ -10,7 +10,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import { UpdateProfileDto } from 'src/dto/update-profile.dto';
+import { UpdateProfileDto } from '../dto/update-profile.dto';
 
 interface User {
   id: number;
