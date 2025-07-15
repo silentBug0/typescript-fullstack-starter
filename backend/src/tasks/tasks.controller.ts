@@ -13,7 +13,7 @@ import { TasksService } from './tasks.service';
 import type { Task, User } from '@prisma/client';
 import { TaskEventsGateway } from './task-events.gateway';
 import { AuthGuard } from '@nestjs/passport';
-import { CurrentUser } from 'src/auth/auth.controller';
+import { CurrentUser } from '../auth/auth.controller';
 
 @Controller('tasks')
 @UseGuards(AuthGuard('jwt'))
