@@ -77,7 +77,7 @@ const AdminPage = () => {
             <tr
               key={u.id}
               className={`border-b ${
-                u.id === currentUserId ? "bg-yellow-100 font-semibold" : ""
+                u.id === currentUserId ? "bg-yellow-100 px-2 py-1 rounded" : ""
               }`}
             >
               <td className="p-2 border">{u.name}</td>

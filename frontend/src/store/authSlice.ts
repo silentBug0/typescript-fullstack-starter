@@ -47,7 +47,6 @@ export const RegisterThunk = createAsyncThunk(
         const res = await api.post("/auth/register", { email, password, name });
         const token = res.data.accessToken;
         const user: User = res.data.user;
-
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
 

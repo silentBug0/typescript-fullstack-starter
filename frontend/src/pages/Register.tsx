@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../store/hooks";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterThunk } from "../store/authSlice";
 import { toast } from "react-toastify";
 
@@ -79,6 +79,13 @@ export default function Register() {
         >
           Register
         </button>
+
+        <div className="text-center text-sm text-gray-500 mt-4">
+          Already have an account?{" "}
+          <Link to="/" className="text-blue-300 hover:underline">
+            Back to Login
+          </Link>
+        </div>
       </form>
     </div>
   );
