@@ -21,9 +21,12 @@ const Tasks = () => {
   const auth = useAppSelector((state) => state.auth);
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
+  const token =
+    auth.token ??
+    localStorage.getItem("token") ??
+    sessionStorage.getItem("token");
 
-  console.log("auth", auth); // Debugging line
-  
+  console.log("token ", token); // Debugging line
 
   const handleEdit = (task: Task) => {
     setEditingTask(task);
@@ -32,7 +35,7 @@ const Tasks = () => {
 
   const handleDelete = async (id: number) => {
     await axios.delete(`${import.meta.env.VITE_API_URL}/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${auth.token}` },
+      headers: { Authorization: `Bearer ${token}` },
       data: {
         userId: auth.user?.id ?? 0, // Use the logged-in user's ID
       },
@@ -92,7 +95,7 @@ const Tasks = () => {
           title,
           userId: auth.user?.id ?? 0, // Use the logged-in user's ID
         },
-        { headers: { Authorization: `Bearer ${auth.token}` } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setEditingTask(null);
     } else {
@@ -103,7 +106,7 @@ const Tasks = () => {
           userId: auth.user?.id ?? 0, // Use the logged-in user's ID
         },
         {
-          headers: { Authorization: `Bearer ${auth.token}` },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
     }
@@ -144,7 +147,7 @@ const Tasks = () => {
                       completed: !task.completed,
                       userId: task.userId,
                     },
-                    { headers: { Authorization: `Bearer ${auth.token}` } }
+                    { headers: { Authorization: `Bearer ${token}` } }
                   );
                 }}
               />
