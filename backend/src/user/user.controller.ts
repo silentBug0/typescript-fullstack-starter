@@ -15,6 +15,8 @@ import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { Request as ExpressRequest } from 'express'; // ✅ alias it
+import { CurrentUser } from '../auth/auth.controller';
+import { User } from '@prisma/client';
 
 function getUser(req: ExpressRequest): Express.User {
   if (!req.user) throw new UnauthorizedException();
@@ -24,12 +26,18 @@ function getUser(req: ExpressRequest): Express.User {
 @Controller('users')
 @UseGuards(AuthGuard('jwt'), RolesGuard) // ✅ Fix is here
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   // @Roles('admin') // ✅ This now works because AuthGuard injects `req.user`
   getAllUsers() {
     return this.userService.findAll();
+  }
+
+  @Get('/me')
+  // @Roles('admin') // ✅ This now works because AuthGuard injects `req.user`
+  getUser(@CurrentUser() user: User) {
+    return this.userService.findOne(user.id);
   }
 
   @Post()

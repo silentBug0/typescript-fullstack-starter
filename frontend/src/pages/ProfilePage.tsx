@@ -4,21 +4,54 @@ import api from "../api/axios";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
 import BackButton from "./BackButton";
+import axios from "axios";
 
 export default function ProfilePage() {
-  const user = useAppSelector((state) => state.auth.user);
+  const auth = useAppSelector((state) => state.auth);
+  const user = auth.user;
   console.log("🔍 user in ProfilePage:", user);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  const token =
+    auth.token ??
+    localStorage.getItem("token") ??
+    sessionStorage.getItem("token");
+
   // Pre-fill form with user data
+  // useEffect(() => {
+  //   if (user) {
+  //     setName(user.name || "");
+  //     setEmail(user.email || "");
+  //   }
+  // }, [user]);
+
   useEffect(() => {
-    if (user) {
-      setName(user.name || "");
-      setEmail(user.email || "");
-    }
-  }, [user]);
+    const fetchUser = async () => {
+      if (!token) return;
+      if (!user) return;
+      try {
+
+
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/users/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setName(res.data.name || "");
+        setEmail(res.data.email || "");
+      } catch (err) {
+        console.error("❌ Failed to load users", err);
+      }
+    };
+
+    fetchUser();
+  }, [token, user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
