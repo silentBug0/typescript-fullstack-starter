@@ -67,8 +67,8 @@ const AdminPage = () => {
 
       <h1 className="text-2xl font-bold mb-4">⚙️ Admin Panel</h1>
       <table className="w-full border rounded">
-        <thead>
-          <tr className="bg-gray-100 text-left">
+        <thead className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white">
+          <tr>
             <th className="p-2 border">Name</th>
             <th className="p-2 border">Email</th>
             <th className="p-2 border">Role</th>
@@ -80,7 +80,9 @@ const AdminPage = () => {
             <tr
               key={u.id}
               className={`border-b ${
-                u.id === currentUserId ? "bg-yellow-100 px-2 py-1 rounded" : ""
+                u.id === currentUserId
+                  ? "bg-amber-700 dark:bg-blue-300 dark:text-black px-2 py-1 rounded"
+                  : ""
               }`}
             >
               <td className="p-2 border">{u.name}</td>

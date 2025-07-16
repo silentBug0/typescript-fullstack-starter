@@ -1,76 +1,105 @@
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import { Outlet } from "react-router-dom";
-import { Menu } from "lucide-react"; // No LogOut or useAppDispatch needed here now
+import { Outlet, useLocation } from "react-router-dom";
+import { Menu, Sun, Moon } from "lucide-react";
 
 const Layout = () => {
-  // isOpen state determines if the sidebar is open or closed.
-  // This now controls desktop collapse as well.
-  const [isOpen, setIsOpen] = useState(true); // Start desktop open (wide)
-  // isMobile state tracks if the current screen width is considered mobile.
+  const [isOpen, setIsOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
 
+  const location = useLocation();
+
+  // Optional: Map routes to page titles
+  const routeTitles: Record<string, string> = {
+    "/dashboard": "Dashboard",
+    "/profile": "Profile",
+    "/users": "Users",
+    "/tasks": "Tasks",
+    "/admin": "Admin Panel",
+    "/admin/add-user": "Add User",
+  };
+  const pageTitle = routeTitles[location.pathname] || "My App";
+
+  // Detect screen size
   useEffect(() => {
     const updateSize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      // On desktop, the sidebar's open/collapsed state is now managed by isOpen.
-      // On mobile, it's an overlay that starts closed.
-      if (!mobile) {
-        setIsOpen(true); // Default to open/wide on desktop initially
-      } else {
-        setIsOpen(false); // Default to closed/overlay on mobile initially
-      }
+      setIsOpen(!mobile); // Sidebar open on desktop, closed on mobile
     };
-
     updateSize();
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
+  // Apply dark mode
+  useEffect(() => {
+    const html = document.documentElement;
+    if (darkMode) {
+      html.classList.add("dark");
+    } else {
+      html.classList.remove("dark");
+    }
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      {/* Sidebar Component */}
-      {/* Pass isOpen to control its width/visibility */}
+    <div className="min-h-screen flex bg-gray-100 dark:bg-gray-900">
+      {/* Sidebar */}
       <Sidebar isOpen={isOpen} onClose={() => setIsOpen(false)} />
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <div
-        className={`flex-1 flex flex-col transition-all duration-300
-        ${
-          // On mobile, no padding (sidebar is overlay)
-          isMobile
-            ? "pl-0"
-            : // On desktop, adjust padding based on sidebar's isOpen state
-            isOpen
-            ? "md:pl-0" // When sidebar is open/wide
-            : "md:pl-0" // When sidebar is collapsed
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          isMobile ? "ml-0" : isOpen ? "ml-0" : "ml-0"
         }`}
       >
-        {/* Top Bar - sticky at the top, simplified to match image */}
-        <div className="sticky top-0 z-30 bg-white shadow p-4 flex items-center">
-          {/* Hamburger menu button - always visible on mobile */}
+        {/* Top Bar */}
+        <div className="sticky top-0 z-30 bg-white dark:bg-gray-800 shadow p-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            {/* Hamburger (mobile) */}
+            {isMobile && (
+              <button
+                className="text-gray-700 dark:text-white hover:text-black"
+                onClick={() => setIsOpen(true)}
+              >
+                <Menu size={28} />
+              </button>
+            )}
+
+            {/* Collapse Toggle (desktop) */}
+            {!isMobile && (
+              <button
+                className="text-gray-700 dark:text-white hover:text-black"
+                onClick={() => setIsOpen((prev) => !prev)}
+              >
+                <Menu size={28} />
+              </button>
+            )}
+
+            {/* Logo & Page Title */}
+            <div className="flex items-center gap-2">
+              <img src="/logo192.png" className="h-8 w-8" alt="Logo" />
+              <h1 className="text-xl font-semibold text-gray-800 dark:text-white">
+                {pageTitle}
+              </h1>
+            </div>
+          </div>
+
+          {/* Dark Mode Toggle */}
           <button
-            className="text-gray-700 hover:text-black md:hidden mr-4"
-            onClick={() => setIsOpen(true)} // Opens the mobile sidebar
+            onClick={() => setDarkMode((prev) => !prev)}
+            className="text-gray-700 dark:text-white hover:text-black dark:hover:text-yellow-400"
           >
-            <Menu size={28} />
+            {darkMode ? <Sun size={22} /> : <Moon size={22} />}
           </button>
-          {/* My Application Title and Logout button are REMOVED from here,
-              as per image_7c5d04.png */}
-          {/* Add a toggle button for the desktop sidebar collapse */}
-          {!isMobile && ( // Only show on desktop
-            <button
-              className="text-gray-700 hover:text-black"
-              onClick={() => setIsOpen(!isOpen)} // Toggles sidebar state
-            >
-              <Menu size={28} />
-            </button>
-          )}
         </div>
 
-        {/* Main Content (Outlet renders nested routes) */}
-        <div className="p-6 flex-grow">
+        {/* Nested Route Content */}
+        <div className="p-6 text-gray-800 dark:text-white flex-grow">
           <Outlet />
         </div>
       </div>

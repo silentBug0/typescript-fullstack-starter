@@ -43,7 +43,7 @@ const AdminCreateUser = () => {
         value={form.name}
         onChange={(e) => setForm({ ...form, name: e.target.value })}
         placeholder="Name"
-        className="w-full border px-2 py-1 rounded"
+        className="w-full border px-2 py-1 rounded dark:text-black"
         required
       />
       <input
@@ -51,7 +51,7 @@ const AdminCreateUser = () => {
         onChange={(e) => setForm({ ...form, email: e.target.value })}
         placeholder="Email"
         type="email"
-        className="w-full border px-2 py-1 rounded"
+        className="w-full border px-2 py-1 rounded dark:text-black"
         required
       />
       <input
@@ -59,13 +59,14 @@ const AdminCreateUser = () => {
         onChange={(e) => setForm({ ...form, password: e.target.value })}
         placeholder="Password"
         type="password"
-        className="w-full border px-2 py-1 rounded"
+        className="w-full border px-2 py-1 rounded dark:text-black"
         required
       />
       <select
         value={form.role}
         onChange={(e) => setForm({ ...form, role: e.target.value })}
-        className="w-full border px-2 py-1 rounded"
+        // className="w-full border px-2 py-1 rounded"
+        className="w-full bg-white dark:bg-white text-black dark:text-black border border-gray-300 dark:border-gray-600 rounded px-3 py-2"
       >
         <option value="user">User</option>
         <option value="admin">Admin</option>

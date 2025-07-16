@@ -57,7 +57,7 @@ export default function ProfilePage() {
           <input
             type="text"
             value={name}
-            className="border border-gray-300 rounded px-3 py-2 w-full"
+            className="border border-gray-300 rounded px-3 py-2 w-full dark:text-black"
             onChange={(e) => setName(e.target.value)}
             required
           />
@@ -68,7 +68,7 @@ export default function ProfilePage() {
           <input
             type="email"
             value={email}
-            className="border border-gray-300 rounded px-3 py-2 w-full"
+            className="border border-gray-300 rounded px-3 py-2 w-full dark:text-black"
             onChange={(e) => setEmail(e.target.value)}
             required
           />

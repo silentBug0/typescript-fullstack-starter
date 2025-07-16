@@ -126,7 +126,7 @@ const Tasks = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Add or edit task"
-          className="border rounded px-2 py-1 w-full"
+          className="border rounded px-2 py-1 w-full dark:text-black"
         />
         <button className="bg-blue-600 text-white px-4 py-1 rounded">
           {editingTask ? "Update" : "Add"}

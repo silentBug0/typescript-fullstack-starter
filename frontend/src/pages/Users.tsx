@@ -50,8 +50,8 @@ const Users = () => {
       <h1 className="text-xl font-bold mb-4">👥 All Users</h1>
 
       <table className="w-full border rounded">
-        <thead>
-          <tr className="bg-gray-100 text-left">
+        <thead className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white">
+          <tr className="text-left">
             <th className="p-2 border">Name</th>
             <th className="p-2 border">Email</th>
             <th className="p-2 border">Role</th>
@@ -90,7 +90,7 @@ const Users = () => {
                         }
                       }
                     }}
-                    className="border rounded px-1 py-0.5 text-sm"
+                    className="bg-white dark:bg-gray-800 text-black dark:text-white border border-gray-300 dark:border-gray-600 rounded px-3 py-2"
                   >
                     <option value="user">user</option>
                     <option value="admin">admin</option>
