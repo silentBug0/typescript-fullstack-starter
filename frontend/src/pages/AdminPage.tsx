@@ -4,6 +4,7 @@ import { useAppSelector } from "../store/hooks";
 import axios from "axios";
 import { promoteUser, deleteUser } from "../api/admin";
 import { toast } from "react-toastify";
+import BackButton from "./BackButton";
 
 interface User {
   id: number;
@@ -62,6 +63,8 @@ const AdminPage = () => {
 
   return (
     <div>
+      <BackButton />
+
       <h1 className="text-2xl font-bold mb-4">⚙️ Admin Panel</h1>
       <table className="w-full border rounded">
         <thead>
@@ -86,9 +89,9 @@ const AdminPage = () => {
               <td className="p-2 border space-x-2">
                 <button
                   onClick={() => handleRoleChange(u.id, u.role)}
-                  className="bg-yellow-500 text-white px-2 py-1 rounded"
+                  className="bg-yellow-500 text-white px-3 py-1 rounded text-sm font-semibold w-[110px] text-center"
                 >
-                  Make {u.role === "admin" ? "User" : "Admin"}
+                  {u.role === "admin" ? "Make User" : "Make Admin"}
                 </button>
                 <button
                   onClick={() => handleDelete(u.id)}

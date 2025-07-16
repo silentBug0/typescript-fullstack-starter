@@ -3,6 +3,7 @@ import { useAppDispatch } from "../store/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { RegisterThunk } from "../store/authSlice";
 import { toast } from "react-toastify";
+import BackButton from "./BackButton";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -29,6 +30,8 @@ export default function Register() {
         onSubmit={handleSubmit}
         className="bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-md"
       >
+        <BackButton />
+
         <h2 className="text-2xl font-bold text-center">Register</h2>
 
         <div className="mb-4">

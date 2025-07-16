@@ -3,10 +3,11 @@ import { useAppSelector } from "../store/hooks";
 import api from "../api/axios";
 import { toast } from "react-toastify";
 import type { AxiosError } from "axios";
+import BackButton from "./BackButton";
 
 export default function ProfilePage() {
   const user = useAppSelector((state) => state.auth.user);
-console.log("🔍 user in ProfilePage:", user);
+  console.log("🔍 user in ProfilePage:", user);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -47,6 +48,8 @@ console.log("🔍 user in ProfilePage:", user);
 
   return (
     <div className="p-8 max-w-xl mx-auto">
+      <BackButton />
+
       <h1 className="text-2xl font-bold mb-4">Edit Profile</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

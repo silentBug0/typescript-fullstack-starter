@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useAppSelector } from "../store/hooks";
 import { toast } from "react-toastify";
+import BackButton from "./BackButton";
 
 const AdminCreateUser = () => {
   const token = useAppSelector((state) => state.auth.token);
@@ -36,6 +37,7 @@ const AdminCreateUser = () => {
 
   return (
     <form onSubmit={handleSubmit} className="p-4 space-y-4 max-w-md">
+      <BackButton />
       <h2 className="text-xl font-bold">Create New User</h2>
       <input
         value={form.name}

@@ -3,6 +3,7 @@ import { getSocket } from "../socket";
 import axios from "axios";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { fetchTasks } from "../store/taskSlice";
+import BackButton from "./BackButton";
 
 interface Task {
   id: number;
@@ -116,6 +117,8 @@ const Tasks = () => {
 
   return (
     <div>
+      <BackButton />
+
       <h1 className="text-xl font-bold mb-4">📝 Tasks</h1>
 
       <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
